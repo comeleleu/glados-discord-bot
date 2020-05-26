@@ -1,14 +1,17 @@
 const Discord = require('discord.js');
-const random = require('random');
-const fs = require('fs');
-const jsonfile = require('jsonfile');
-
+// const random = require('random');
+// const fs = require('fs');
+// const jsonfile = require('jsonfile');
+const config = require('./config.json');
 const bot = new Discord.Client();
+// const botCommands = require('./commands');
 const roles = {
     yellow: '712726356386906162',
     pink: '712726390453174383',
     purple: '712726447122284594'
 };
+
+// bot.commands = new Discord.Collection();
 
 // var stats = {};
 // if (fs.existsSync('stats.json')) {
@@ -16,33 +19,41 @@ const roles = {
 // }
 
 bot.on('ready', () => {
-    console.log(`Logged in as ${bot.user.tag}!`);
-});
-
-bot.on('reaction', reaction => {
-    console.log(reaction);
-    reaction.message.channel.send(`The emoji used was: ${reaction.emoji}`);
+    console.log(`Connecté en tant que ${bot.user.tag}`);
 });
 
 bot.on('message', message => {
     if (message.author.id == bot.user.id)
         return;
 
-    console.log(message.reactions);
-
     //PING
-    if (message.content === 'ping') {
+    if (message.content === '!ping') {
         message.reply('pong');
+        return;
     }
 
-    // ROLES
     const parts = message.content.split(' ');
-    if (parts[0] === '!role') {
+
+    // ROLES
+    if (message.content.startsWith('!role')) {
         var roleName = parts[1];
 
         if (roleName in roles === true) {
             message.member.roles.add(roles[roleName]);
-            message.reply('vous avez désormais le rôle ' + roleName);
+            message.reply('vous possédez désormais le rôle ' + roleName);
+        }
+        else {
+            message.reply('le rôle ' + roleName + ' n\'est pas valide...')
+        }
+    }
+    
+    // KICK
+    else if (message.content.startsWith('!kick')) {
+        if (message.mentions.users.size) {
+            const taggedUser = message.mentions.users.first();
+            message.reply('voulez-vous vraiment kick ' + taggedUser.username + ' ?');
+        } else {
+            message.reply('Le joueur ' + parts[1] + ' est introuvable...');
         }
     }
 
@@ -81,5 +92,4 @@ bot.on('message', message => {
 
 });
 
-bot.login('NzEyNzE3MjQwNTcwNDc4NjQ2.XsVo-g.w5ALB01suu-LVVtkiMBQ36ftwhE');
-
+bot.login(config.token);
