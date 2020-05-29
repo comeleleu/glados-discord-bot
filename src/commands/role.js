@@ -3,6 +3,8 @@ module.exports = {
     description: 'Obtenir les rôles donnés en argument',
     execute(message, args) {
 
+        console.log(message.guild.roles);
+
         var roles = {
             yellow: '712726356386906162',
             pink: '712726390453174383',

@@ -2,7 +2,6 @@ module.exports = {
     name: 'kick',
     description: 'Kick un user',
     execute(message, args) {
-        console.log(args);
 
         if (message.mentions.users.size) {
             var taggedUser = message.mentions.users.first();
