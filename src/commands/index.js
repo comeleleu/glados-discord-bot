@@ -1,6 +1,9 @@
 module.exports = {
-    DeleteMessage: require('./deleteMessage'),
+    
+    Info: require('./info'),
     Kick: require('./kick'),
-    Role: require('./role'),
     Ping: require('./ping'),
+    Prune: require('./prune'),
+    Role: require('./role'),
+    
 };

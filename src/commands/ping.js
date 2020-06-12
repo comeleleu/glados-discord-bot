@@ -1,9 +1,12 @@
 module.exports = {
     name: 'ping',
-    description: 'Ping!',
-    execute(message, args) {
+    description: 'Test if the bot is working and can respond',
+    usage: '',
+    args: false,
+    cooldown: 5,
+    execute(message) {
 
-        message.reply('pong');
+        message.channel.send('Pong');
 
     },
 };

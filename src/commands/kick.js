@@ -1,14 +1,15 @@
 module.exports = {
     name: 'kick',
-    description: 'Kick un user',
-    execute(message, args) {
+    description: 'Kick a user from the server',
+    usage: '@user',
+    args: false,
+    execute(message) {
 
-        if (message.mentions.users.size) {
-            var taggedUser = message.mentions.users.first();
-            message.reply('voulez-vous vraiment kick ' + taggedUser.username + ' ?');
-        } else {
-            message.reply('Le joueur ' + args[0] + ' est introuvable...');
-        }
+        if (!message.mentions.users.size) return message.channel.send('You need to tag a user in order to kick them...');
+
+        const taggedUser = message.mentions.users.first();
+        
+        message.channel.send(`You wanted to kick ${taggedUser.username}`);
 
     },
 };
