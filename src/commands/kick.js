@@ -3,6 +3,8 @@ module.exports = {
     description: 'Kick a user from the server',
     usage: '@user',
     args: false,
+    guildOnly: true,
+    cooldown: 0,
     execute(message) {
 
         if (!message.mentions.users.size) return message.channel.send('You need to tag a user in order to kick them...');

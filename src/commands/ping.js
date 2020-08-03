@@ -3,7 +3,8 @@ module.exports = {
     description: 'Test if the bot is working and can respond',
     usage: '',
     args: false,
-    cooldown: 5,
+    guildOnly: false,
+    cooldown: 10,
     execute(message) {
 
         message.channel.send('Pong');

@@ -3,6 +3,8 @@ module.exports = {
     description: 'Attribute roles to users',
     usage: '@user @role',
     args: false,
+    guildOnly: true,
+    cooldown: 0,
     execute(message, args) {
 
         if (!message.mentions.roles.size) return message.channel.send('You need to tag role(s) in order to give them...');

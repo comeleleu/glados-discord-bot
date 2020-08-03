@@ -3,6 +3,8 @@ module.exports = {
     description: 'Various informations about the server',
     usage: '<args|avatar|roles|server|user>',
     args: true,
+    guildOnly: true,
+    cooldown: 60,
 	execute(message, args) {
 
         switch (args[0]) {

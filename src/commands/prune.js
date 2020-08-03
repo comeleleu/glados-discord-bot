@@ -3,6 +3,8 @@ module.exports = {
     description: 'Deletes up to 99 messages',
     usage: '<count>',
     args: true,
+    guildOnly: true,
+    cooldown: 0,
     execute(message, args) {
 
         const amount = parseInt(args[0]) + 1;
