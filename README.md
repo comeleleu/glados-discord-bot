@@ -1,5 +1,5 @@
 # GLaDOS
-GLaDOS is a Discord bot created by Côme Leleu for [Vossey](https://www.vossey.com) Discord server.
+GLaDOS is a Discord bot created by Côme Leleu for [Vossey.com](https://www.vossey.com) Discord server.
 
 <b>This bot is under development, many changes and improvements will be made before release.</b>
 
@@ -29,3 +29,5 @@ To start the bot, run the following commands in your command prompt: node index.
 ```bash
 node index.js
 ```
+## License
+GLaDOS Discord bot Copyright © 2020 - Côme Leleu
