@@ -19,7 +19,7 @@ There is many commands:
 ### Downloading
 To install the project, run the following commands in your command prompt:
 ```bash
-git clone git@github.com:comeleleu/GLaDOS.git
+git clone git@github.com:comeleleu/GLaDOS-Discord-bot.git
 cd GLaDOS
 npm install
 ```
