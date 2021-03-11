@@ -4,11 +4,11 @@ module.exports = {
     usage: '@user @role',
     args: false,
     guildOnly: true,
-    cooldown: 0,
-    execute(message, args) {
 
-        if (!message.mentions.roles.size) return message.channel.send('You need to tag role(s) in order to give them...');
-        if (!message.mentions.users.size) return message.channel.send('You need to tag user(s) in order to give them role(s)...');
+    execute(message) {
+
+        if (!message.mentions.roles.size) return'You need to tag role(s) in order to give them...';
+        if (!message.mentions.users.size) return 'You need to tag user(s) in order to give them role(s)...';
 
         message.mentions.users.forEach(user => {
             message.mentions.roles.forEach(role => {
@@ -28,7 +28,7 @@ module.exports = {
             reply += ` ${role}`
         });
 
-        message.channel.send(reply);
+        return reply;
 
     },
 };

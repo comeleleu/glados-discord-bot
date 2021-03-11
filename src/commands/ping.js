@@ -1,13 +1,14 @@
 module.exports = {
     name: 'ping',
-    description: 'Test if the bot is working and can respond',
+    description: 'Ping',
     usage: '',
     args: false,
-    guildOnly: false,
-    cooldown: 10,
-    execute(message) {
+    guildOnly: true,
+    permissions: 'MANAGE_CHANNELS',
 
-        message.channel.send('Pong');
+    execute() {
+
+        return 'Pong';
 
     },
 };
