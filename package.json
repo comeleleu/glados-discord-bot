@@ -10,8 +10,11 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.2.0",
+    "feed-validator": "^1.1.1",
     "jsonfile": "^6.0.1",
-    "random": "^2.2.0"
+    "lowdb": "^1.0.0",
+    "rss-parser": "^3.10.0",
+    "url-validator": "^2.0.3"
   },
   "devDependencies": {}
 }

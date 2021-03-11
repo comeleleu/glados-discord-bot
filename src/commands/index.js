@@ -1,9 +1,9 @@
 module.exports = {
     
-    Info: require('./info'),
-    Kick: require('./kick'),
-    Ping: require('./ping'),
-    Prune: require('./prune'),
+    Delete: require('./delete'),
     Role: require('./role'),
+    Rss: require('./rss'),
+
+    Ping: require('./ping')
     
 };
