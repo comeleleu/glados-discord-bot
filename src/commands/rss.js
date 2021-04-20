@@ -1,13 +1,11 @@
 module.exports = {
     name: 'rss',
-    description: 'Get the list, create, update, or remove rss feeds to be notified (on this channel) when a new content has been added.'+
-        '\n- Use list to get all the active feeds for this server.'+
-        '\n- Use create to add a new rss feed.'+
-        '\n- Use update when you want to change channel for notifications.'+
-        '\n- Use remove to disable an existing rss feed.',
+    description: 'List, create, update, or remove RSS feed notifications',
     usage: '<list|create|update|remove> <url>',
     args: true,
     guildOnly: true,
+    delete: true,
+    permission: 'MANAGE_CHANNELS',
 
     execute(message, args, client, db) {
         let serverId = message.guild.id;

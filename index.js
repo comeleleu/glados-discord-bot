@@ -52,27 +52,41 @@ client.on('message', message => {
 
     // check message's origin
     if (command.guildOnly && message.channel.type !== 'text') {
-        return message.reply('I can\'t execute that command inside DMs...');
+        return message.author.send('I can\'t execute that command inside DMs...');
     }
 
     // check if the author have permission
     if (command.permissions) {
         const authorPerms = message.channel.permissionsFor(message.author);
         if (!authorPerms || !authorPerms.has(command.permissions)) {
-            return message.reply('You don\'t have permission to do this!');
+            return message.author.send('You don\'t have permission to do this!');
         }
+    }
+
+    // check if needs help
+    if (args[0] == '--help' || args[0] == '-h') {
+        let reply = `${config.prefix}${commandName}: ${command.description}`;
+
+        if (command.usage) {
+            reply += `\nThe proper usage would be: \`${config.prefix}${commandName} ${command.usage}\``;
+        }
+ 
+        message.author.send(reply);
+
+        return message.channel.bulkDelete(1, true).catch(err => {
+            message.author.send('There was an error trying to delete messages in this channel...');
+        });
     }
 
     // check if the message contains arguments
     if (command.args && !args.length) {
-        let reply = `You didn't provide any arguments, ${message.author}!`;
+        let reply = 'You didn\'t provide any arguments!';
 
         if (command.usage) {
             reply += `\nThe proper usage would be: \`${config.prefix}${commandName} ${command.usage}\``;
         }
 
-        // return message.author.send(reply);
-        return message.reply(reply);
+        return message.author.send(reply);
     }
     
     // execute command
@@ -80,20 +94,17 @@ client.on('message', message => {
 
         reply = command.execute(message, args, client, db);
 
-        // message.channel.bulkDelete(1, true);
-
-        if (typeof reply !== 'undefined') {
-            // message.author.send(reply);
-            message.reply(reply);
-
+        if (command.delete) {
+            message.channel.bulkDelete(1, true).catch(err => {
+                message.author.send('There was an error trying to delete messages in this channel...');
+            });
         }
 
     } catch (error) {
         console.error(error);
-        // message.author.send(`There was an error trying to execute command ${commandName}...`);
-        message.reply(`There was an error trying to execute command ${commandName}...`);
+        message.author.send(`There was an error trying to execute command ${config.prefix}${commandName}...`);
     }
 
 });
 
-// New reaction
+// Todo: add event on a new reaction

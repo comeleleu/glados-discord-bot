@@ -1,5 +1,6 @@
 module.exports = {
     name: 'rss',
+    
     execute(client, db) {
 
         let Parser = require('rss-parser');

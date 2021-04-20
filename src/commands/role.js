@@ -2,33 +2,48 @@ module.exports = {
     name: 'role',
     description: 'Attribute roles to users',
     usage: '@user @role',
-    args: false,
+    args: true,
     guildOnly: true,
+    delete: true,
+    permissions: 'MANAGE_ROLES',
 
-    execute(message) {
+    execute(message, args, client, db) {
 
-        if (!message.mentions.roles.size) return'You need to tag role(s) in order to give them...';
-        if (!message.mentions.users.size) return 'You need to tag user(s) in order to give them role(s)...';
+        if (!message.mentions.roles.size) {
+            message.author.send('You need to tag role(s) in order to give them...');
+        }
+        if (!message.mentions.users.size) {
+            message.author.send('You need to tag user(s) in order to give them role(s)...');
+        }
+
+        let messageComplete = false;
+        let reply = 'User(s)';
+        let replyRoles = 'now have role(s)';
 
         message.mentions.users.forEach(user => {
-            message.mentions.roles.forEach(role => {
-                message.guild.member(user).roles.add(role);
-            });
-        });
+            let messageRoles = 'You now have role(s)';
 
-        let reply = 'User(s) ';
-
-        message.mentions.users.forEach(user => {
             reply += `${user} `;
+
+            message.mentions.roles.forEach(role => {
+                let roleName = role.name.split(" ").join("");
+
+                message.guild.member(user).roles.add(role);
+                
+                if (!messageComplete) {
+                    replyRoles += ` @${roleName}`;
+                }
+                messageRoles += ` @${roleName}`;
+            });
+
+            if (!messageComplete) {
+                messageComplete = true;
+            }
+
+            user.send(messageRoles + ` on ${message.guild.name}`);
         });
 
-        reply += `now have role(s)`
-
-        message.mentions.roles.forEach(role => {
-            reply += ` ${role}`
-        });
-
-        return reply;
+        message.author.send(reply + replyRoles);
 
     },
 };

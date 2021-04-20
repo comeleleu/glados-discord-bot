@@ -1,14 +1,15 @@
 module.exports = {
     name: 'ping',
-    description: 'Ping',
+    description: 'Check if GLaDOS is working',
     usage: '',
     args: false,
     guildOnly: true,
-    permissions: 'MANAGE_CHANNELS',
+    delete: true,
+    permissions: 'ADMINISTRATOR',
 
-    execute() {
+    execute(message, args, client, db) {
 
-        return 'Pong';
+        message.author.send('Pong');
 
     },
 };
