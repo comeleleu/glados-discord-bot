@@ -1,55 +1,34 @@
 module.exports = {
     name: 'rss',
     description: 'List, create, update, or remove RSS feed notifications',
-    usage: '<list|create|update|remove> <url>',
+    usage: '<list|create|update|remove> [url]',
     args: true,
     guildOnly: true,
     delete: true,
     permission: 'MANAGE_CHANNELS',
 
     execute(message, args, client, db) {
-        let serverId = message.guild.id;
-        let channelId = message.channel.id;
-        let url = args[1];
-        let reply;
-
         switch(args[0]) {
-            case 'valid':
-                url = this.isValidUrl(url);
-
-                if (url != false) {
-                    reply = this.isValidRssFeed(url, function(response) {
-                        if (response == true) {
-                            reply = 'rss feed url good';
-                        } else {
-                            reply = 'rss feed not valid...';
-                        }
-                        return reply;
-                    });
-                    console.log(reply);
-                } else {
-                    reply = 'url not valid...';
-                }
-                break;
-
             case 'list':
-                reply = this.listRssFeed(client, db, serverId);
+                this.listRssFeed(client, db, message);
                 break;
 
             case 'create':
-                reply = this.createRssFeed(db, serverId, channelId, url);
+                this.createRssFeed(db, message, args[1]);
                 break;
 
             case 'update':
-                reply = this.updateRssFeed(db, serverId, channelId, url);
+                this.updateRssFeed(db, message, args[1]);
                 break;
 
             case 'remove':
-                reply = this.removeRssFeed(db, serverId, url);
+                this.removeRssFeed(db, message, args[1]);
+                break;
+
+            default:
+                message.author.send('This option doesn\'t exist, input --help or -h for more details');
                 break;
         }
-
-        return reply;
     },
 
     getRssFeed(db, serverId, url) {
@@ -70,16 +49,17 @@ module.exports = {
         let Parser = require('rss-parser');
         let parser = new Parser();
 
-        parser.parseURL(url, function (err, feed) {
+        parser.parseURL(url, function (err) {
             if (err) {
-                console.log("An error has occurred. Abort everything!");
                 return callback(false);
             }
             return callback(true);
         });
     },
 
-    listRssFeed(client, db, serverId) {
+    listRssFeed(client, db, message) {
+        let serverId = message.guild.id;
+
         reply = 'Rss feeds available:';
 
         let feeds = db.get('rss')
@@ -90,26 +70,38 @@ module.exports = {
             reply += `\n- ${feed.url} on ${client.channels.cache.get(feed.channelId)}`;
         }); 
 
-        return reply;
+        message.author.send(reply);
     },
 
-    createRssFeed(db, serverId, channelId, url) {
+    createRssFeed(db, message, url) {
+        let serverId = message.guild.id;
+        let channelId = message.channel.id;
         let feed = this.getRssFeed(db, serverId, url);
 
         if (typeof feed == 'undefined') {
 
-            if(this.isValidRssFeed(url)) {
-                db.get('rss')
-                .push({ serverId: serverId, channelId: channelId, url: url, active: true })
-                .write();
+            url = this.isValidUrl(url);
 
-                reply = 'The rss feed has been created';
+            if (url != false) {
+                this.isValidRssFeed(url, function(response) {
+                    if (response == true) {
+
+                        db.get('rss')
+                            .push({ serverId: serverId, channelId: channelId, url: url, active: true })
+                            .write();
+
+                        message.author.send('The rss feed has been created');
+
+                    } else {
+                        message.author.send('The rss feed entered isn\'t valid...');
+                    }
+                });
             } else {
-                reply = 'The rss feed url isn\'t valid...';
+                message.author.send('The URL entered isn\'t valid...');
             }
 
         } else if(feed.active == true) {
-            reply = 'The rss feed already exist and can\'t be created...';
+            message.author.send('The rss feed already exist and can\'t be created...');
 
         } else {
             db.get('rss')
@@ -117,17 +109,17 @@ module.exports = {
                 .assign({ channelId: channelId, active: true })
                 .write();
 
-            reply = 'The rss feed has been restored';
+            message.author.send('The rss feed has been restored');
         }
-
-        return reply;
     },
 
-    updateRssFeed(db, serverId, channelId, url) {
+    updateRssFeed(db, message, url) {
+        let serverId = message.guild.id;
+        let channelId = message.channel.id;
         let feed = this.getRssFeed(db, serverId, url);
 
         if (typeof feed == 'undefined') {
-            reply = 'The rss feed doesn\'t exist...';
+            message.author.send('The rss feed doesn\'t exist...');
 
         } else if(feed.active == true) {
             db.get('rss')
@@ -135,20 +127,19 @@ module.exports = {
                 .assign({ channelId: channelId, active: true })
                 .write();
 
-            reply = 'The rss feed has been updated';
+            message.author.send('The rss feed has been updated');
 
         } else {
-            reply = 'The rss feed is disabled and can\'t be updated...';
+            message.author.send('The rss feed is disabled and can\'t be updated...');
         }
-
-        return reply;
     },
 
-    removeRssFeed(db, serverId, url) {
+    removeRssFeed(db, message, url) {
+        let serverId = message.guild.id;
         let feed = this.getRssFeed(db, serverId, url);
 
         if (typeof feed == 'undefined') {
-            reply = 'The rss feed doesn\'t exist...';
+            message.author.send('The rss feed doesn\'t exist...');
 
         } else if(feed.active == true) {
             db.get('rss')
@@ -156,12 +147,10 @@ module.exports = {
                 .assign({ active: false })
                 .write();
 
-            reply = 'The rss feed has been disabled';
+            message.author.send('The rss feed has been disabled');
 
         } else {
-            reply = 'The rss feed is already disabled...';
+            message.author.send('The rss feed is already disabled...');
         }
-
-        return reply;
     }
 };
