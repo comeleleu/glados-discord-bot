@@ -1,11 +1,14 @@
 module.exports = {
     name: 'delete',
+    aliases: ['prune'],
     description: 'Delete up to 99 messages on a channel',
     usage: '<count>',
     args: true,
     guildOnly: true,
-    delete: false,
+    deleteMessage: false,
+    hiddenCommand: false,
     permissions: 'MANAGE_MESSAGES',
+    cooldown: 0,
 
     execute(message, args, client, db) {
 

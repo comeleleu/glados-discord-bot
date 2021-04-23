@@ -1,11 +1,14 @@
 module.exports = {
     name: 'role',
+    aliases: [],
     description: 'Attribute roles to users',
     usage: '@user @role',
     args: true,
     guildOnly: true,
-    delete: true,
+    deleteMessage: true,
+    hiddenCommand: false,
     permissions: 'MANAGE_ROLES',
+    cooldown: 0,
 
     execute(message, args, client, db) {
 

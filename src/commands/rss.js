@@ -1,11 +1,14 @@
 module.exports = {
     name: 'rss',
+    aliases: ['feed', 'pfp'],
     description: 'List, create, update, or remove RSS feed notifications',
     usage: '<list|create|update|remove> [url]',
     args: true,
     guildOnly: true,
-    delete: true,
+    deleteMessage: true,
+    hiddenCommand: false,
     permission: 'MANAGE_CHANNELS',
+    cooldown: 0,
 
     execute(message, args, client, db) {
         switch(args[0]) {

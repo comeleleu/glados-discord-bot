@@ -1,11 +1,12 @@
 module.exports = {
+
+    Ping: require('./ping'),
     
-    Commands: require('./commands'),
-    
+    Help: require('./help'),
     Delete: require('./delete'),
     Role: require('./role'),
     Rss: require('./rss'),
 
-    Ping: require('./ping')
+    Cake: require('./cake'),
     
 };
