@@ -1,15 +1,14 @@
 # GLaDOS
 GLaDOS is a Discord bot created by Côme Leleu for [Vossey.com](https://www.vossey.com) Discord server.
 
-<b>This bot is under development, many changes and improvements will be made before release.</b>
-
 ## Commands
-There is many commands:
-- info: Various informations about the server
-- kick: Kick a user from the server
-- ping: Test if the bot is working and can respond
-- prune: Deletes up to 99 messages
-- role: Attribute roles to users
+vailables commands:
+- cake: This is a secret
+- delete: Delete up to 99 messages on a channel
+- help: List of all available commands
+- Ping: Check if GLaDOS is working
+- Role: Attribute roles to users
+- rss: List, create, update, or delete RSS feed notifications
 
 ## Instructions
 ### Requirements
@@ -27,7 +26,7 @@ npm install
 ### Starting the bot
 To start the bot, run the following commands in your command prompt: node index.js
 ```bash
-node index.js
+node .
 ```
 ## License
 GLaDOS Discord bot Copyright © 2020 - Côme Leleu

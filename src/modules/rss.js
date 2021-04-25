@@ -1,27 +1,43 @@
 module.exports = {
     name: 'rss',
+    
     execute(client, db) {
 
-        let Parser = require('rss-parser');
-        let parser = new Parser();
-
-        let feeds = db.get('rss')
-            .filter({ active: true })
-            .value();
+        const dbModule = client.modules.get('db');
+        let feeds = dbModule.findAll(db, 'rss', { active: true });
 
         feeds.forEach(feed => {
 
             (async () => {
 
-                feedContent = await parser.parseURL(feed.url);
+                let url = this.isValidUrl(feed.url);
 
-                if (typeof feed.lastItemLink !== 'undefined') {
+                if (url != false) {
+                    this.getFeedContent(url, function(response) {
+                        if (response != false) {
 
-                    this.sendMessages(client, feed, feedContent);
+                            if (typeof feed.lastItemLink !== 'undefined') {
+                                let published = false;
 
+                                response.items.slice().reverse().forEach(responseItem => {
+                                    if (published == true) {
+                                        client.channels.cache.get(feed.channelId).send(`${responseItem.title} ${responseItem.link}`);
+                                    }
+                                    else if (responseItem.link == feed.lastItemLink) {
+                                        published = true;
+                                    }
+                                });
+                            }
+            
+                            dbModule.update(db, 'rss', { serverId: feed.serverId, url: feed.url }, { lastItemLink: response.items[0].link });
+
+                        } else {
+                            dbModule.delete(db, 'rss', { serverId: feed.serverId, url: url });
+                        }
+                    });
+                } else {
+                    dbModule.delete(db, 'rss', { serverId: feed.serverId, url: url });
                 }
-
-                this.saveLastItemLink(db, feed, feedContent)
 
             })();
             
@@ -29,23 +45,21 @@ module.exports = {
 
     },
 
-    saveLastItemLink(db, feed, feedContent) {
-        db.get('rss')
-            .find({ serverId: feed.serverId, url: feed.url })
-            .assign({ lastItemLink: feedContent.items[0].link })
-            .write();
+    isValidUrl(url) {
+        const validate = require('url-validator');
+
+        return validate(url);
     },
 
-    sendMessages(client, feed, feedContent) {
-        let publish = false;
+    getFeedContent(url, callback) {
+        const Parser = require('rss-parser');
+        let parser = new Parser();
 
-        feedContent.items.slice().reverse().forEach(feedContentItem => {
-            if (publish == true) {
-                client.channels.cache.get(feed.channelId).send(`@everyone ${feedContentItem.title} ${feedContentItem.link}`);
+        parser.parseURL(url, function (err, feed) {
+            if (err) {
+                return callback(false);
             }
-            else if (feedContentItem.link == feed.lastItemLink) {
-                publish = true;
-            }
+            return callback(feed);
         });
-    }
+    },
 };
