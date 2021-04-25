@@ -1,6 +1,6 @@
 module.exports = {
     name: 'delete',
-    aliases: ['prune'],
+    aliases: ['prune','remove'],
     description: 'Delete up to 99 messages on a channel',
     usage: '<count>',
     args: true,
