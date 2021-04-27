@@ -21,7 +21,7 @@ module.exports = {
 
                                 response.items.slice().reverse().forEach(responseItem => {
                                     if (published == true) {
-                                        client.channels.cache.get(feed.channelId).send(`${responseItem.title} ${responseItem.link}`);
+                                        client.channels.cache.get(feed.channelId).send(`@everyone ${responseItem.title} ${responseItem.link}`);
                                     }
                                     else if (responseItem.link == feed.lastItemLink) {
                                         published = true;
