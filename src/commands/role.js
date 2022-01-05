@@ -10,7 +10,7 @@ module.exports = {
     permissions: 'MANAGE_ROLES',
     cooldown: 0,
 
-    execute(message, args, client, db) {
+    execute(client, message, args) {
 
         if (!message.mentions.roles.size) {
             message.author.send('You need to tag role(s) in order to give them...');

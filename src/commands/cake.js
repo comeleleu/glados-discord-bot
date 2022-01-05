@@ -9,7 +9,7 @@ module.exports = {
     permissions: 'SEND_MESSAGES',
     cooldown: 300,
 
-    execute(message, args, client, db) {
+    execute(client, message, args,) {
 
         let responses = [
             "Quit now and cake will be served immediately.",

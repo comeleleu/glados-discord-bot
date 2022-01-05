@@ -10,30 +10,30 @@ module.exports = {
     permission: 'MANAGE_CHANNELS',
     cooldown: 0,
 
-    execute(message, args, client, db) {
+    execute(client, message, args) {
 
         switch(args[0]) {
             case 'list':
             case 'show':
             case 'display':
-                this.listFeed(message, client, db);
+                this.listFeed(client, message);
                 break;
 
             case 'create':
             case 'add':
-                this.createFeed(message, args, client, db);
+                this.createFeed(client, message, args);
                 break;
 
             case 'update':
             case 'modify':
             case 'change':
-                this.updateFeed(message, args, client, db);
+                this.updateFeed(client, message, args);
                 break;
 
             case 'delete':
             case 'remove':
             case 'disable':
-                this.deleteFeed(message, args, client, db);
+                this.deleteFeed(client, message, args);
                 break;
 
             default:
@@ -43,10 +43,10 @@ module.exports = {
         
     },
 
-    listFeed(message, client, db) {
+    listFeed(client, message) {
         const dbModule = client.modules.get('db');
         let serverId = message.guild.id;
-        let feeds = dbModule.findAll(db, 'rss', { serverId: serverId, active: true });
+        let feeds = dbModule.findAll(client.db, 'rss', { serverId: serverId, active: true });
         let reply;
 
         if (feeds.length > 0) {
@@ -62,13 +62,13 @@ module.exports = {
         message.author.send(reply);
     },
 
-    createFeed(message, args, client, db) {
+    createFeed(client, message, args) {
         const dbModule = client.modules.get('db');
         const rssModule = client.modules.get('rss');
         let serverId = message.guild.id;
         let channelId = message.channel.id;
         let url = args[1];
-        let feed = dbModule.findOne(db, 'rss', { serverId: serverId, url: url });
+        let feed = dbModule.findOne(client.db, 'rss', { serverId: serverId, url: url });
 
         if (typeof feed == 'undefined') {
 
@@ -77,7 +77,7 @@ module.exports = {
             if (url != false) {
                 rssModule.getFeedContent(url, function(response) {
                     if (response != false) {
-                        dbModule.insert(db, 'rss', { serverId: serverId, channelId: channelId, url: url, active: true, lastItemLink: response.items[0].link });
+                        dbModule.insert(client.db, 'rss', { serverId: serverId, channelId: channelId, url: url, active: true, lastItemLink: response.items[0].link });
 
                         message.author.send('The RSS feed has been created');
 
@@ -93,7 +93,7 @@ module.exports = {
             message.author.send('The RSS feed already exist and can\'t be created...');
 
         } else {
-            db.get('rss')
+            client.db.get('rss')
                 .find({ serverId: serverId, url: url })
                 .assign({ channelId: channelId, active: true })
                 .write();
@@ -102,12 +102,12 @@ module.exports = {
         }
     },
 
-    updateFeed(message, args, client, db) {
+    updateFeed(client, message, args) {
         const dbModule = client.modules.get('db');
         let serverId = message.guild.id;
         let channelId = message.channel.id;
         let url = args[1];
-        let feed = dbModule.findOne(db, 'rss', { serverId: serverId, url: url });
+        let feed = dbModule.findOne(client.db, 'rss', { serverId: serverId, url: url });
 
         if (typeof feed == 'undefined') {
             message.author.send('The RSS feed doesn\'t exist...');
@@ -115,7 +115,7 @@ module.exports = {
         } else if(feed.active == true) {
 
             if (feed.channelId != channelId) {
-                dbModule.update(db, 'rss', { serverId: serverId, url: url }, { channelId: channelId });
+                dbModule.update(client.db, 'rss', { serverId: serverId, url: url }, { channelId: channelId });
 
                 message.author.send('The RSS feed has been updated');
             } else {
@@ -128,17 +128,17 @@ module.exports = {
         }
     },
 
-    deleteFeed(message, args, client, db) {
+    deleteFeed(client, message, args) {
         const dbModule = client.modules.get('db');
         let serverId = message.guild.id;
         let url = args[1];
-        let feed = dbModule.findOne(db, 'rss', { serverId: serverId, url: url });
+        let feed = dbModule.findOne(client.db, 'rss', { serverId: serverId, url: url });
 
         if (typeof feed == 'undefined') {
             message.author.send('The RSS feed doesn\'t exist...');
 
         } else if(feed.active == true) {
-            dbModule.update(db, 'rss', { serverId: serverId, url: url }, { active: false });
+            dbModule.update(client.db, 'rss', { serverId: serverId, url: url }, { active: false });
 
             message.author.send('The RSS feed has been disabled');
 

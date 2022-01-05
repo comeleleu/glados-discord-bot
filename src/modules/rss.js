@@ -1,10 +1,10 @@
 module.exports = {
     name: 'rss',
     
-    execute(client, db) {
+    execute(client) {
 
         const dbModule = client.modules.get('db');
-        let feeds = dbModule.findAll(db, 'rss', { active: true });
+        let feeds = dbModule.findAll(client.db, 'rss', { active: true });
 
         feeds.forEach(feed => {
 
@@ -29,14 +29,14 @@ module.exports = {
                                 });
                             }
             
-                            dbModule.update(db, 'rss', { serverId: feed.serverId, url: feed.url }, { lastItemLink: response.items[0].link });
+                            dbModule.update(client.db, 'rss', { serverId: feed.serverId, url: feed.url }, { lastItemLink: response.items[0].link });
 
                         } else {
-                            dbModule.delete(db, 'rss', { serverId: feed.serverId, url: url });
+                            dbModule.delete(client.db, 'rss', { serverId: feed.serverId, url: url });
                         }
                     });
                 } else {
-                    dbModule.delete(db, 'rss', { serverId: feed.serverId, url: url });
+                    dbModule.delete(client.db, 'rss', { serverId: feed.serverId, url: url });
                 }
 
             })();

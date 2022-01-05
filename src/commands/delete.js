@@ -10,7 +10,7 @@ module.exports = {
     permissions: 'MANAGE_MESSAGES',
     cooldown: 0,
 
-    execute(message, args, client, db) {
+    execute(client, message, args) {
 
         let amount = parseInt(args[0]) + 1;
 

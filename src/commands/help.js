@@ -10,13 +10,13 @@ module.exports = {
     permissions: 'ADMINISTRATOR',
     cooldown: 30,
 
-    execute(message, args, client, db) {
+    execute(client, message, args) {
 
         let reply = `GLaDOS Discord bot available commands:`;
 
         client.commands.forEach(command => {
             if (!command.hiddenCommand) {
-                reply += `\n  - ${command.name}: ${command.description}`;
+                reply += `\n  - ${client.config.prefix}${command.name}: ${command.description}`;
             }
         });
 

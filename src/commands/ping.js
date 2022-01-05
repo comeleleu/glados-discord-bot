@@ -10,7 +10,7 @@ module.exports = {
     permissions: 'ADMINISTRATOR',
     cooldown: 10,
 
-    execute(message, args, client, db) {
+    execute(client, message, args) {
 
         message.author.send('Pong');
 
