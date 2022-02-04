@@ -91,7 +91,7 @@ client.on('ready', () => {
         }
 
         // cooldown
-        if (commandName.cooldown != 0) {
+        if (commandName.cooldown !== 0) {
             const { cooldowns } = client;
 
             if (!cooldowns.has(command.name)) {
