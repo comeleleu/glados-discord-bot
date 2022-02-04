@@ -2,7 +2,7 @@ module.exports = {
     name: 'role',
     aliases: [],
     description: 'Attribute roles to users',
-    usage: '@user @role',
+    usage: '<@user,...> <@role,...>',
     args: true,
     guildOnly: true,
     deleteMessage: true,

@@ -91,7 +91,7 @@ client.on('ready', () => {
         }
 
         // cooldown
-        if (commandName.cooldown != 0) {
+        if (commandName.cooldown !== 0) {
             const { cooldowns } = client;
 
             if (!cooldowns.has(command.name)) {
@@ -107,7 +107,7 @@ client.on('ready', () => {
             
                 if (now < expirationTime) {
                     const timeLeft = (expirationTime - now) / 1000;
-                    message.author.send(`Please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${config.prefix}${command.name}\` command.`);
+                    message.author.send(`Please wait ${timeLeft.toFixed(0)} more second(s) before reusing the \`${config.prefix}${command.name}\` command.`);
 
                     return message.channel.bulkDelete(1, true).catch(err => {
                         message.author.send('There was an error trying to delete messages in this channel...');

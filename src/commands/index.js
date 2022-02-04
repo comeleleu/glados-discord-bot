@@ -4,8 +4,8 @@ module.exports = {
     Ping: require('./ping'),
     
     // Main commands
-    Help: require('./help'),
     Delete: require('./delete'),
+    Help: require('./help'),
     Role: require('./role'),
     Rss: require('./rss'),
 

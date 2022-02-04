@@ -8,7 +8,7 @@ module.exports = {
     },
 
     findAll(db, table, filters) {
-        return feeds = db.get(table)
+        return db.get(table)
             .filter(filters)
             .value();
     },

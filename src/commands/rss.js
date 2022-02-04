@@ -74,9 +74,9 @@ module.exports = {
 
             url = rssModule.isValidUrl(url);
 
-            if (url != false) {
+            if (url !== false) {
                 rssModule.getFeedContent(url, function(response) {
-                    if (response != false) {
+                    if (response !== false) {
                         dbModule.insert(db, 'rss', { serverId: serverId, channelId: channelId, url: url, active: true, lastItemLink: response.items[0].link });
 
                         message.author.send('The RSS feed has been created');
@@ -89,7 +89,7 @@ module.exports = {
                 message.author.send('The URL entered isn\'t valid...');
             }
 
-        } else if(feed.active == true) {
+        } else if(feed.active === true) {
             message.author.send('The RSS feed already exist and can\'t be created...');
 
         } else {
@@ -112,7 +112,7 @@ module.exports = {
         if (typeof feed == 'undefined') {
             message.author.send('The RSS feed doesn\'t exist...');
 
-        } else if(feed.active == true) {
+        } else if(feed.active === true) {
 
             if (feed.channelId != channelId) {
                 dbModule.update(db, 'rss', { serverId: serverId, url: url }, { channelId: channelId });
@@ -137,7 +137,7 @@ module.exports = {
         if (typeof feed == 'undefined') {
             message.author.send('The RSS feed doesn\'t exist...');
 
-        } else if(feed.active == true) {
+        } else if(feed.active === true) {
             dbModule.update(db, 'rss', { serverId: serverId, url: url }, { active: false });
 
             message.author.send('The RSS feed has been disabled');
