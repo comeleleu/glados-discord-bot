@@ -15,6 +15,13 @@ vailables commands:
 - git command line
 - node v12.x or latest (not tested with previous versions)
 
+```bash
+curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
+source ~/.profile
+nvm install node
+nvm install --lts
+```
+
 ### Downloading
 To install the project, run the following commands in your command prompt:
 ```bash

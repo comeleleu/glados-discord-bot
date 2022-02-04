@@ -7,7 +7,7 @@ module.exports = {
     deleteMessage: true,
     hiddenCommand: true,
     permissions: 'SEND_MESSAGES',
-    cooldown: 300,
+    cooldown: 60*15,
 
     execute(message, args, client, db) {
 
